@@ -1,0 +1,41 @@
+version: "3.8"
+
+volumes:
+  local_postgres_data: {}
+  local_postgres_data_backups: {}
+
+networks:
+  sidis:
+    driver: bridge
+
+services:
+  backend:
+    networks:
+      - sidis
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: sidis_backend
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    command: ["/bin/sh", "/app/entrypoint.sh"]
+
+  postgres:
+    networks:
+      - sidis
+    restart: always
+    image: postgres:16.1
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+      - local_postgres_data_backups:/backups
+    env_file:
+      - .env
+    ports:
+      - "0.0.0.0:5432:5432"

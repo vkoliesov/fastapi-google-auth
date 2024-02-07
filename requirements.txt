@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+alembic==1.13.1
+psycopg2-binary==2.9.9
+SQLAlchemy==1.4.51
+databases[asyncpg]
+python-decouple==3.8
