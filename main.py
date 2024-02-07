@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from api.routers import api_router
 from db import database
 
 origins = [
@@ -8,7 +9,7 @@ origins = [
 ]
 
 app = FastAPI()
-
+app.include_router(api_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
